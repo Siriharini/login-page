@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartoon Kingdom Login</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></noscript>
+
+    <style>
+        :root {
+            /* --- Color Palette --- */
+            --primary-bg-start: #a8dadc;        /* Soft blue for gradient start */
+            --primary-bg-end: #f7ede2;          /* Gentle peach for gradient end */
+            --container-bg: #ffffff;            /* White for login box */
+            --text-dark: #3d405b;               /* Dark, desaturated blue for main text */
+            --heading-color: #457b9d;           /* Deep teal for headings */
+            --input-border-default: #e0e0e0;    /* Light grey for input borders */
+            --input-label-color: #555;          /* Mid-grey for labels */
+            --accent-orange: #fca311;           /* Vibrant orange for accents (buttons, focus) */
+            --accent-orange-hover: #e6910e;     /* Slightly darker orange on hover */
+            --accent-orange-loading: #d39e00;   /* Muted orange for loading state */
+            --icon-grey: #a0a0a0;               /* Soft grey for icons */
+
+            /* --- Spacing & Sizing --- */
+            --padding-base: 40px;
+            --padding-sm: 20px;
+            --border-radius-lg: 15px;
+            --border-radius-md: 10px;
+            --border-radius-sm: 8px;
+
+            /* --- Font Sizes --- */
+            --font-size-base: 1em;
+            --font-size-lg: 1.1em;
+            --font-size-xl: 1.2em;
+            --font-size-xxl: 2.5em;
+        }
+
+        /* --- General & Base Styling --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-bg-start), var(--primary-bg-end));
+            color: var(--text-dark);
+            overflow: hidden; /* Prevents scrollbars from animations */
+            position: relative; /* Essential for positioning the fox relative to the body */
+        }
+
+        /* --- Login Container Styling --- */
+        .login-container {
+            background-color: var(--container-bg);
+            padding: 45px var(--padding-base);
+            border-radius: var(--border-radius-lg); /* Rounded corners for a friendly, cartoon-like appearance */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* Soft, prominent shadow */
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-sizing: border-box; /* Includes padding in the width calculation */
+            position: relative;
+            overflow: hidden; /* Keeps elements inside the container */
+            animation: fadeInScale 0.8s ease-out forwards; /* Initial entry animation */
+        }
+
+        .login-container h2 {
+            font-size: var(--font-size-xxl); /* Large and welcoming heading */
+            margin-bottom: 35px;
+            color: var(--heading-color);
+            animation: fadeInDown 1s ease-out; /* Heading entry animation */
+        }
+
+        /* --- Input Groups & Fields Styling --- */
+        .input-group {
+            margin-bottom: 28px;
+            position: relative; /* For positioning the eye icon and chameleon */
+        }
+
+        .input-group label {
+            display: block;
+            text-align: left;
+            margin-bottom: 10px;
+            font-weight: 600; /* Bolder labels */
+            color: var(--input-label-color);
+            font-size: var(--font-size-base);
+            animation: fadeInLeft 0.8s ease-out forwards; /* Label entry animation */
+            opacity: 0; /* Hidden until animated */
+        }
+
+        /* Staggered animation delays for labels */
+        .input-group:nth-of-type(1) label { animation-delay: 0.2s; }
+        .input-group:nth-of-type(2) label { animation-delay: 0.3s; }
+
+        .input-group input {
+            width: calc(100% - 24px); /* Full width minus padding */
+            padding: 14px 12px;
+            border: 2px solid var(--input-border-default); /* Softer, slightly thicker border */
+            border-radius: var(--border-radius-sm); /* Rounded input fields */
+            font-size: var(--font-size-lg);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions for focus */
+            animation: fadeInRight 0.8s ease-out forwards; /* Input entry animation */
+            opacity: 0; /* Hidden until animated */
+        }
+
+        /* Staggered animation delays for inputs */
+        .input-group:nth-of-type(1) input { animation-delay: 0.4s; }
+        .input-group:nth-of-type(2) input { animation-delay: 0.5s; }
+
+        .input-group input:focus {
+            border-color: var(--accent-orange); /* Vibrant orange border on focus */
+            box-shadow: 0 0 10px rgba(252, 163, 17, 0.3); /* Subtle glow on focus */
+            outline: none; /* Removes default browser outline */
+        }
+
+        /* Eye icon for password visibility */
+        .input-group .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 65%; /* Position relative to the input field */
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--icon-grey);
+            font-size: var(--font-size-xl);
+            transition: color 0.3s ease; /* Smooth color change on hover */
+            animation: fadeIn 0.8s ease-out forwards; /* Icon entry animation */
+            animation-delay: 0.6s;
+            opacity: 0; /* Hidden until animated */
+        }
+
+        .input-group .toggle-password:hover {
+            color: var(--accent-orange); /* Vibrant orange on hover */
+        }
+
+        /* --- Login Button Styling --- */
+        .login-button {
+            background-color: var(--accent-orange);
+            color: white;
+            padding: 16px 30px; /* Generous padding for a larger button */
+            border: none;
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            font-size: var(--font-size-xl);
+            font-weight: bold;
+            width: 100%;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Smooth hover effects */
+            box-shadow: 0 6px 15px rgba(252, 163, 17, 0.3); /* Prominent shadow */
+            animation: fadeInUp 0.8s ease-out forwards; /* Button entry animation */
+            animation-delay: 0.7s;
+            opacity: 0; /* Hidden until animated */
+            position: relative; /* For the sparkle effect */
+            overflow: hidden; /* Hides the sparkle when not active */
+        }
+
+        .login-button:hover {
+            background-color: var(--accent-orange-hover);
+            transform: translateY(-3px); /* Lifts the button slightly */
+            box-shadow: 0 8px 20px rgba(252, 163, 17, 0.4);
+        }
+
+        .login-button:active {
+            transform: translateY(0); /* "Squish" effect when clicked */
+            box-shadow: 0 2px 8px rgba(252, 163, 17, 0.2);
+            animation: buttonSquish 0.2s ease-out; /* Apply squish animation */
+        }
+
+        /* Button Pop-Up Sparkle Effect (CSS generated using ::after pseudo-element) */
+        .login-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%); /* White radial gradient */
+            border-radius: 50%;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0); /* Starts hidden and tiny */
+            transition: transform 0.4s ease-out, opacity 0.4s ease-out; /* Smooth transition for sparkle */
+            pointer-events: none; /* Allows mouse events to pass through to elements beneath */
+        }
+
+        .login-button.sparkle::after {
+            width: 100%;
+            height: 100%;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.5); /* Grows larger to cover button */
+            animation: sparkleFadeOut 0.5s forwards; /* Fades out after growing */
+        }
+
+        /* --- Keyframe Animations --- */
+        @keyframes sparkleFadeOut {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(0.1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
+        }
+        @keyframes buttonSquish {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(1px) scale(0.98); } /* Slight vertical squish */
+            100% { transform: translateY(0) scale(1); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* --- Cartoon Animal Features Specific CSS --- */
+
+        /* 1. Password Strength Chameleon */
+        .password-chameleon {
+            position: absolute;
+            right: -50px; /* Starts off-screen to the right */
+            bottom: -20px;
+            width: 80px; /* Size for your cartoon chameleon */
+            height: auto;
+            opacity: 0; /* Hidden by default */
+            transform: translateX(20px); /* Starts slightly to the right */
+            transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease; /* Smooth animation for entry and color changes */
+            pointer-events: none; /* Allows mouse events to pass through to elements beneath */
+            z-index: 1; /* Ensures it appears above the input field border */
+            filter: grayscale(100%) brightness(0.7); /* Dull/grey initially, before strength is determined */
+        }
+
+        /* Show chameleon when password field is focused or has content */
+        .input-group.is-focused .password-chameleon,
+        .input-group.has-content .password-chameleon {
+            opacity: 1;
+            transform: translateX(0) scale(1); /* Slides into view */
+            right: -30px; /* Stops partially on screen */
+        }
+
+        /* Chameleon color states based on password strength (using CSS filters) */
+        .password-chameleon.strength-weak {
+            filter: saturate(0.8) hue-rotate(0deg) brightness(1); /* Reddish tint, slightly desaturated */
+        }
+        .password-chameleon.strength-medium {
+            filter: saturate(1.5) hue-rotate(60deg) brightness(1); /* Yellowish tint, more saturated */
+        }
+        .password-chameleon.strength-strong {
+            filter: saturate(1.8) hue-rotate(120deg) brightness(1); /* Greenish tint, highly saturated */
+        }
+        .password-chameleon.strength-very-strong {
+            filter: saturate(2.5) hue-rotate(240deg) brightness(1.2); /* Bluish, super vibrant, and slightly brighter */
+            animation: chameleonPulse 0.8s infinite alternate; /* Subtle pulse for very strong passwords */
+        }
+
+        @keyframes chameleonPulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); } /* Slightly scales up and down */
+        }
+
+        /* 2. Login Guardian Fox */
+        .login-fox {
+            position: absolute;
+            bottom: -50px; /* Starts slightly off-screen at the bottom */
+            left: -100px; /* Starts off-screen to the left */
+            width: 180px; /* Size for your cartoon fox */
+            height: auto;
+            z-index: -1; /* Positions it behind the login container */
+            transition: transform 0.1s linear; /* Quick, almost immediate head turn as mouse moves */
+            transform-origin: 70% 30%; /* Adjusts the pivot point for head rotation on the fox image */
+            animation: foxIdleSway 4s infinite ease-in-out; /* Gentle, continuous idle sway animation */
+        }
+
+        @keyframes foxIdleSway {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(2deg); } /* Slight lift and tilt */
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 500px) {
+            .login-container {
+                margin: var(--padding-sm);
+                padding: 30px var(--padding-sm);
+                border-radius: var(--border-radius-md);
+            }
+            .login-container h2 {
+                font-size: 2em;
+                margin-bottom: 25px;
+            }
+            .input-group input {
+                padding: 12px 10px;
+                font-size: var(--font-size-base);
+            }
+            .login-button {
+                padding: 14px 25px;
+                font-size: var(--font-size-lg);
+            }
+            .password-chameleon {
+                width: 60px; /* Smaller chameleon on small screens */
+                right: -20px;
+                bottom: -10px;
+            }
+            .login-fox {
+                width: 120px; /* Smaller fox on small screens */
+                bottom: -30px;
+                left: -70px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <img src="fox-image.png" alt="cartoon fox" class="login-fox" width="180" height="180" loading="lazy">
+
+    <div class="login-container">
+        <h2>Welcome to the animal kingdom</h2>
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Your email here" required autocomplete="email">
+        </div>
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Your secret code" required autocomplete="current-password">
+            <span class="toggle-password">
+                <i class="fas fa-eye"></i>
+            </span>
+            <img src="chameleom-image.jpg" alt="Cartoon Chameleon" class="password-chameleon" width="80" height="80" loading="lazy">
+        </div>
+        <button class="login-button">Login Now</button>
+    </div>
+
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOM Content Loaded. Starting JavaScript initialization.");
+
+            // --- Centralized Element Collection ---
+            // Collect all necessary DOM elements once to minimize repeated queries.
+            // Using a single object makes it easy to pass elements to functions.
+            const domElements = {
+                passwordField: document.getElementById('password'),
+                togglePasswordButton: document.querySelector('.toggle-password'),
+                toggleIcon: null, // Initialized after checking togglePasswordButton
+                loginButton: document.querySelector('.login-button'),
+                emailInput: document.getElementById('email'),
+                passwordChameleon: document.querySelector('.password-chameleon'),
+                loginFox: document.querySelector('.login-fox'),
+                inputFields: document.querySelectorAll('.input-group input') // Returns a NodeList (array-like)
+            };
+
+            // Safely initialize toggleIcon as it depends on togglePasswordButton
+            if (domElements.togglePasswordButton) {
+                domElements.toggleIcon = domElements.togglePasswordButton.querySelector('i.fas');
+            } else {
+                console.warn("Element Not Found: '.toggle-password' button not found. Password toggle feature will be skipped if it relies solely on this.");
+            }
+
+
+            // --- Feature 1: Password Strength Chameleon Logic ---
+            function initializeChameleonFeature() {
+                // Ensure all required elements for this feature exist
+                if (!domElements.passwordField || !domElements.passwordChameleon) {
+                    console.warn("Chameleon Feature: Missing required elements (passwordField or passwordChameleon). Skipping initialization.");
+                    return;
+                }
+                console.log("Chameleon Feature: Initializing...");
+
+                domElements.passwordField.addEventListener('input', () => {
+                    const password = domElements.passwordField.value;
+                    let strength = 0;
+
+                    // Basic strength calculation based on various criteria
+                    if (password.length >= 6) strength++;
+                    if (password.length >= 10) strength++;
+                    if (/[A-Z]/.test(password)) strength++;       // Contains uppercase letters
+                    if (/[a-z]/.test(password)) strength++;       // Contains lowercase letters
+                    if (/[0-9]/.test(password)) strength++;       // Contains numbers
+                    if (/[^A-Za-z0-9]/.test(password)) strength++; // Contains special characters
+
+                    // Remove all previous strength-related classes to reset the chameleon's color
+                    domElements.passwordChameleon.classList.remove('strength-weak', 'strength-medium', 'strength-strong', 'strength-very-strong');
+
+                    // Apply the new strength class based on the calculated score
+                    if (strength <= 2) {
+                        domElements.passwordChameleon.classList.add('strength-weak');
+                    } else if (strength <= 4) {
+                        domElements.passwordChameleon.classList.add('strength-medium');
+                    } else if (strength <= 6) {
+                        domElements.passwordChameleon.classList.add('strength-strong');
+                    } else {
+                        domElements.passwordChameleon.classList.add('strength-very-strong');
+                    }
+                });
+
+                domElements.passwordField.addEventListener('focus', () => {
+                    // Find the parent input-group to apply focus styling for the chameleon's slide-in
+                    const parentGroup = domElements.passwordField.closest('.input-group');
+                    if (parentGroup) {
+                        parentGroup.classList.add('is-focused');
+                    }
+                });
+
+                domElements.passwordField.addEventListener('blur', () => {
+                    const parentGroup = domElements.passwordField.closest('.input-group');
+                    if (parentGroup) {
+                        parentGroup.classList.remove('is-focused'); // Remove focus styling
+                        if (domElements.passwordField.value.trim() === '') {
+                            // If the field is empty on blur, remove 'has-content' to make chameleon fade out
+                            parentGroup.classList.remove('has-content');
+                            // Also reset its color classes
+                            domElements.passwordChameleon.classList.remove('strength-weak', 'strength-medium', 'strength-strong', 'strength-very-strong');
+                        } else {
+                            // If there's content, ensure 'has-content' is added to keep chameleon visible
+                            parentGroup.classList.add('has-content');
+                        }
+                    }
+                });
+                console.log("Chameleon Feature: Initialized successfully.");
+            }
+
+
+            // --- Feature 2: Login Guardian Fox (Mouse Follow) ---
+            function initializeFoxFeature() {
+                if (!domElements.loginFox) {
+                    console.warn("Fox Feature: Missing required element (loginFox). Skipping initialization.");
+                    return;
+                }
+                console.log("Fox Feature: Initializing...");
+
+                let foxOriginX, foxOriginY; // Variables to store the fox's head pivot point
+
+                const calculateFoxOrigin = () => {
+                    if (!domElements.loginFox) return; // Double-check if element is still valid
+
+                    try {
+                        const foxRect = domElements.loginFox.getBoundingClientRect();
+                        // These multipliers (0.7, 0.3) determine the exact point on the image
+                        // around which it rotates. Adjust these if your fox image's "eyes"
+                        // or "head" pivot point are at a different relative position.
+                        foxOriginX = foxRect.left + foxRect.width * 0.7;
+                        foxOriginY = foxRect.top + foxRect.height * 0.3;
+                    } catch (error) {
+                        console.error("Fox Feature: Error calculating fox origin (getBoundingClientRect issue?):", error);
+                        // Set origins to undefined to prevent further errors
+                        foxOriginX = undefined;
+                        foxOriginY = undefined;
+                    }
+                };
+
+                // Calculate origin initially when the DOM is ready
+                calculateFoxOrigin();
+                // Re-calculate origin whenever the window is resized to handle responsive layouts
+                window.addEventListener('resize', calculateFoxOrigin);
+
+                document.addEventListener('mousemove', (e) => {
+                    // Defensive check: Recalculate if origin is somehow not defined.
+                    // This can happen if 'calculateFoxOrigin' failed previously or during initial load.
+                    if (typeof foxOriginX === 'undefined' || typeof foxOriginY === 'undefined') {
+                        calculateFoxOrigin(); // Try to calculate again
+                        if (typeof foxOriginX === 'undefined' || typeof foxOriginY === 'undefined') {
+                            // If still undefined, it's a persistent issue, so stop trying to animate.
+                            return;
+                        }
+                    }
+
+                    const mouseX = e.clientX;
+                    const mouseY = e.clientY;
+
+                    // Calculate the angle (in radians) from the fox's origin to the mouse position
+                    const deltaX = mouseX - foxOriginX;
+                    const deltaY = mouseY - foxOriginY;
+                    const angleRad = Math.atan2(deltaY, deltaX);
+                    let angleDeg = angleRad * (180 / Math.PI); // Convert radians to degrees
+
+                    // Limit the rotation to a small, natural range (e.g., +/- 10 degrees)
+                    const maxRotation = 10;
+                    angleDeg = Math.max(-maxRotation, Math.min(maxRotation, angleDeg));
+
+                    // Apply the rotation using CSS transform for performance
+                    domElements.loginFox.style.transform = `rotateZ(${angleDeg}deg)`;
+                });
+                console.log("Fox Feature: Initialized successfully.");
+            }
+
+
+            // --- Feature 3: Password Visibility Toggle Logic ---
+            function initializePasswordToggle() {
+                // Ensure all required elements for this feature exist
+                if (!domElements.passwordField || !domElements.togglePasswordButton || !domElements.toggleIcon) {
+                    console.warn("Password Toggle Feature: Missing required elements (passwordField, togglePasswordButton, or toggleIcon). Skipping initialization.");
+                    return;
+                }
+                console.log("Password Toggle Feature: Initializing...");
+
+                domElements.togglePasswordButton.addEventListener('click', () => {
+                    const isPassword = domElements.passwordField.type === 'password';
+                    domElements.passwordField.type = isPassword ? 'text' : 'password';
+
+                    // Update the Font Awesome icon visually
+                    if (isPassword) {
+                        domElements.toggleIcon.classList.remove('fa-eye');
+                        domElements.toggleIcon.classList.add('fa-eye-slash');
+                    } else {
+                        domElements.toggleIcon.classList.remove('fa-eye-slash');
+                        domElements.toggleIcon.classList.add('fa-eye');
+                    }
+                });
+                console.log("Password Toggle Feature: Initialized successfully.");
+            }
+
+
+            // --- Feature 4: Form Submission & Button Sparkle Logic ---
+            function initializeFormSubmission() {
+                // Ensure all required elements for this feature exist
+                if (!domElements.loginButton || !domElements.emailInput || !domElements.passwordField) {
+                    console.warn("Form Submission Feature: Missing required elements (loginButton, emailInput, or passwordField). Skipping initialization.");
+                    return;
+                }
+                console.log("Form Submission Feature: Initializing...");
+
+                domElements.loginButton.addEventListener('click', (event) => {
+                    event.preventDefault(); // Prevent the default form submission (page reload)
+
+                    // Basic client-side validation
+                    if (domElements.emailInput.value.trim() === '' || domElements.passwordField.value.trim() === '') {
+                        alert('Please fill in both email and password to enter the Cartoon Kingdom!');
+                        return; // Stop the function if validation fails
+                    }
+
+                    // Trigger the CSS-based sparkle animation
+                    domElements.loginButton.classList.add('sparkle');
+                    // Remove the 'sparkle' class after a short delay to allow the animation to complete
+                    setTimeout(() => {
+                        // Safely remove class, checking if the button element still exists (e.g., if page navigated away)
+                        if (domElements.loginButton) domElements.loginButton.classList.remove('sparkle');
+                    }, 500); // This duration should match the 'sparkleFadeOut' animation in your CSS
+
+                    // Set the button to a 'loading' state visually and functionally
+                    domElements.loginButton.textContent = 'Logging In...';
+                    domElements.loginButton.disabled = true; // Disable to prevent multiple submissions
+                    domElements.loginButton.style.cursor = 'not-allowed';
+                    domElements.loginButton.style.backgroundColor = 'var(--accent-orange-loading)'; // Use CSS variable for color
+
+                    // Simulate an asynchronous login request (e.g., to a server-side API)
+                    setTimeout(() => {
+                        // Reset the button to its original state after the simulated login process
+                        if (domElements.loginButton) { // Ensure button element still exists
+                            domElements.loginButton.textContent = 'Login Now';
+                            domElements.loginButton.disabled = false;
+                            domElements.loginButton.style.cursor = 'pointer';
+                            domElements.loginButton.style.backgroundColor = 'var(--accent-orange)'; // Restore original color
+                        }
+
+                        // Provide a success message to the user
+                        alert('Welcome to the Cartoon Kingdom! Login successful!');
+                        // In a real application, you would typically redirect the user to a secure dashboard:
+                        // window.location.href = '/dashboard';
+
+                    }, 2000); // Simulate a 2-second delay for the login process
+                });
+                console.log("Form Submission Feature: Initialized successfully.");
+            }
+
+
+            // --- Feature 5: General Input Field Focus/Blur Animations ---
+            function initializeInputFocusBlur() {
+                // Check if the NodeList of input fields exists and is not empty
+                if (!domElements.inputFields || domElements.inputFields.length === 0) {
+                    console.warn("Input Focus/Blur Feature: No input fields found. Skipping initialization.");
+                    return;
+                }
+                console.log("Input Focus/Blur Feature: Initializing...");
+
+                // Iterate over each input field found
+                domElements.inputFields.forEach(input => {
+                    input.addEventListener('focus', () => {
+                        const parentGroup = input.closest('.input-group');
+                        if (parentGroup) {
+                            parentGroup.classList.add('is-focused'); // Add a class to the parent for styling effects
+                        }
+                        input.classList.add('input-active'); // Add a class directly to the input field itself
+                    });
+
+                    input.addEventListener('blur', () => {
+                        const parentGroup = input.closest('.input-group');
+                        if (parentGroup) {
+                            parentGroup.classList.remove('is-focused'); // Remove focus class from the parent
+                        }
+                        input.classList.remove('input-active'); // Remove focus class from the input
+
+                        // Add or remove a 'has-content' class based on whether the input field contains text.
+                        // This is useful for persistent styling when a field has been filled out.
+                        if (input.value.trim() !== '') {
+                            input.classList.add('has-content');
+                        } else {
+                            input.classList.remove('has-content');
+                        }
+                    });
+                });
+                console.log("Input Focus/Blur Feature: Initialized successfully.");
+            }
+
+            // --- Call all initialization functions ---
+            // These will only run if their required elements are found in the DOM
+            initializeChameleonFeature();
+            initializeFoxFeature();
+            initializePasswordToggle();
+            initializeFormSubmission();
+            initializeInputFocusBlur();
+
+            console.log("All main JavaScript features attempted to initialize. Check for specific warnings above if features are not working.");
+        }); // End DOMContentLoaded
+    </script>
+
+</body>
+</html>

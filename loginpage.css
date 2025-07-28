@@ -1,0 +1,311 @@
+:root {
+    /* --- Color Palette --- */
+    --primary-bg-start: #a8dadc;        /* Soft blue for gradient start */
+    --primary-bg-end: #f7ede2;          /* Gentle peach for gradient end */
+    --container-bg: #ffffff;            /* White for login box */
+    --text-dark: #3d405b;               /* Dark, desaturated blue for main text */
+    --heading-color: #457b9d;           /* Deep teal for headings */
+    --input-border-default: #e0e0e0;    /* Light grey for input borders */
+    --input-label-color: #555;          /* Mid-grey for labels */
+    --accent-orange: #fca311;           /* Vibrant orange for accents (buttons, focus) */
+    --accent-orange-hover: #e6910e;     /* Slightly darker orange on hover */
+    --accent-orange-loading: #d39e00;   /* Muted orange for loading state */
+    --icon-grey: #a0a0a0;               /* Soft grey for icons */
+
+    /* --- Spacing & Sizing --- */
+    --padding-base: 40px;
+    --padding-sm: 20px;
+    --border-radius-lg: 15px;
+    --border-radius-md: 10px;
+    --border-radius-sm: 8px;
+
+    /* --- Font Sizes --- */
+    --font-size-base: 1em;
+    --font-size-lg: 1.1em;
+    --font-size-xl: 1.2em;
+    --font-size-xxl: 2.5em;
+}
+
+/* --- General & Base Styling --- */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary-bg-start), var(--primary-bg-end));
+    color: var(--text-dark);
+    overflow: hidden; /* Prevents scrollbars from animations */
+    position: relative; /* Essential for positioning the fox relative to the body */
+}
+
+/* --- Login Container Styling --- */
+.login-container {
+    background-color: var(--container-bg);
+    padding: 45px var(--padding-base);
+    border-radius: var(--border-radius-lg); /* Rounded corners for a friendly, cartoon-like appearance */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* Soft, prominent shadow */
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    box-sizing: border-box; /* Includes padding in the width calculation */
+    position: relative;
+    overflow: hidden; /* Keeps elements inside the container */
+    animation: fadeInScale 0.8s ease-out forwards; /* Initial entry animation */
+}
+
+.login-container h2 {
+    font-size: var(--font-size-xxl); /* Large and welcoming heading */
+    margin-bottom: 35px;
+    color: var(--heading-color);
+    animation: fadeInDown 1s ease-out; /* Heading entry animation */
+}
+
+/* --- Input Groups & Fields Styling --- */
+.input-group {
+    margin-bottom: 28px;
+    position: relative; /* For positioning the eye icon and chameleon */
+}
+
+.input-group label {
+    display: block;
+    text-align: left;
+    margin-bottom: 10px;
+    font-weight: 600; /* Bolder labels */
+    color: var(--input-label-color);
+    font-size: var(--font-size-base);
+    animation: fadeInLeft 0.8s ease-out forwards; /* Label entry animation */
+    opacity: 0; /* Hidden until animated */
+}
+
+/* Staggered animation delays for labels */
+.input-group:nth-of-type(1) label { animation-delay: 0.2s; }
+.input-group:nth-of-type(2) label { animation-delay: 0.3s; }
+
+.input-group input {
+    width: calc(100% - 24px); /* Full width minus padding */
+    padding: 14px 12px;
+    border: 2px solid var(--input-border-default); /* Softer, slightly thicker border */
+    border-radius: var(--border-radius-sm); /* Rounded input fields */
+    font-size: var(--font-size-lg);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions for focus */
+    animation: fadeInRight 0.8s ease-out forwards; /* Input entry animation */
+    opacity: 0; /* Hidden until animated */
+}
+
+/* Staggered animation delays for inputs */
+.input-group:nth-of-type(1) input { animation-delay: 0.4s; }
+.input-group:nth-of-type(2) input { animation-delay: 0.5s; }
+
+.input-group input:focus {
+    border-color: var(--accent-orange); /* Vibrant orange border on focus */
+    box-shadow: 0 0 10px rgba(252, 163, 17, 0.3); /* Subtle glow on focus */
+    outline: none; /* Removes default browser outline */
+}
+
+/* Eye icon for password visibility */
+.input-group .toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 65%; /* Position relative to the input field */
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--icon-grey);
+    font-size: var(--font-size-xl);
+    transition: color 0.3s ease; /* Smooth color change on hover */
+    animation: fadeIn 0.8s ease-out forwards; /* Icon entry animation */
+    animation-delay: 0.6s;
+    opacity: 0; /* Hidden until animated */
+}
+
+.input-group .toggle-password:hover {
+    color: var(--accent-orange); /* Vibrant orange on hover */
+}
+
+/* --- Login Button Styling --- */
+.login-button {
+    background-color: var(--accent-orange);
+    color: white;
+    padding: 16px 30px; /* Generous padding for a larger button */
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    font-size: var(--font-size-xl);
+    font-weight: bold;
+    width: 100%;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Smooth hover effects */
+    box-shadow: 0 6px 15px rgba(252, 163, 17, 0.3); /* Prominent shadow */
+    animation: fadeInUp 0.8s ease-out forwards; /* Button entry animation */
+    animation-delay: 0.7s;
+    opacity: 0; /* Hidden until animated */
+    position: relative; /* For the sparkle effect */
+    overflow: hidden; /* Hides the sparkle when not active */
+}
+
+.login-button:hover {
+    background-color: var(--accent-orange-hover);
+    transform: translateY(-3px); /* Lifts the button slightly */
+    box-shadow: 0 8px 20px rgba(252, 163, 17, 0.4);
+}
+
+.login-button:active {
+    transform: translateY(0); /* "Squish" effect when clicked */
+    box-shadow: 0 2px 8px rgba(252, 163, 17, 0.2);
+    animation: buttonSquish 0.2s ease-out; /* Apply squish animation */
+}
+
+/* Button Pop-Up Sparkle Effect (CSS generated using ::after pseudo-element) */
+.login-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%); /* White radial gradient */
+    border-radius: 50%;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0); /* Starts hidden and tiny */
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out; /* Smooth transition for sparkle */
+    pointer-events: none; /* Allows mouse events to pass through to elements beneath */
+}
+
+.login-button.sparkle::after {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.5); /* Grows larger to cover button */
+    animation: sparkleFadeOut 0.5s forwards; /* Fades out after growing */
+}
+
+/* --- Keyframe Animations --- */
+@keyframes sparkleFadeOut {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(0.1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
+}
+@keyframes buttonSquish {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(1px) scale(0.98); } /* Slight vertical squish */
+    100% { transform: translateY(0) scale(1); }
+}
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+@keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* --- Cartoon Animal Features Specific CSS --- */
+
+/* 1. Password Strength Chameleon */
+.password-chameleon {
+    position: absolute;
+    right: -50px; /* Starts off-screen to the right */
+    bottom: -20px;
+    width: 80px; /* Size for your cartoon chameleon */
+    height: auto;
+    opacity: 0; /* Hidden by default */
+    transform: translateX(20px); /* Starts slightly to the right */
+    transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease; /* Smooth animation for entry and color changes */
+    pointer-events: none; /* Allows mouse events to pass through to elements beneath */
+    z-index: 1; /* Ensures it appears above the input field border */
+    filter: grayscale(100%) brightness(0.7); /* Dull/grey initially, before strength is determined */
+}
+
+/* Show chameleon when password field is focused or has content */
+.input-group.is-focused .password-chameleon,
+.input-group.has-content .password-chameleon {
+    opacity: 1;
+    transform: translateX(0) scale(1); /* Slides into view */
+    right: -30px; /* Stops partially on screen */
+}
+
+/* Chameleon color states based on password strength (using CSS filters) */
+.password-chameleon.strength-weak {
+    filter: saturate(0.8) hue-rotate(0deg) brightness(1); /* Reddish tint, slightly desaturated */
+}
+.password-chameleon.strength-medium {
+    filter: saturate(1.5) hue-rotate(60deg) brightness(1); /* Yellowish tint, more saturated */
+}
+.password-chameleon.strength-strong {
+    filter: saturate(1.8) hue-rotate(120deg) brightness(1); /* Greenish tint, highly saturated */
+}
+.password-chameleon.strength-very-strong {
+    filter: saturate(2.5) hue-rotate(240deg) brightness(1.2); /* Bluish, super vibrant, and slightly brighter */
+    animation: chameleonPulse 0.8s infinite alternate; /* Subtle pulse for very strong passwords */
+}
+
+@keyframes chameleonPulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); } /* Slightly scales up and down */
+}
+
+/* 2. Login Guardian Fox */
+.login-fox {
+    position: absolute;
+    bottom: -50px; /* Starts slightly off-screen at the bottom */
+    left: -100px; /* Starts off-screen to the left */
+    width: 180px; /* Size for your cartoon fox */
+    height: auto;
+    z-index: -1; /* Positions it behind the login container */
+    transition: transform 0.1s linear; /* Quick, almost immediate head turn as mouse moves */
+    transform-origin: 70% 30%; /* Adjusts the pivot point for head rotation on the fox image */
+    animation: foxIdleSway 4s infinite ease-in-out; /* Gentle, continuous idle sway animation */
+}
+
+@keyframes foxIdleSway {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(2deg); } /* Slight lift and tilt */
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 500px) {
+    .login-container {
+        margin: var(--padding-sm);
+        padding: 30px var(--padding-sm);
+        border-radius: var(--border-radius-md);
+    }
+    .login-container h2 {
+        font-size: 2em;
+        margin-bottom: 25px;
+    }
+    .input-group input {
+        padding: 12px 10px;
+        font-size: var(--font-size-base);
+    }
+    .login-button {
+        padding: 14px 25px;
+        font-size: var(--font-size-lg);
+    }
+    .password-chameleon {
+        width: 60px; /* Smaller chameleon on small screens */
+        right: -20px;
+        bottom: -10px;
+    }
+    .login-fox {
+        width: 120px; /* Smaller fox on small screens */
+        bottom: -30px;
+        left: -70px;
+    }
+}
